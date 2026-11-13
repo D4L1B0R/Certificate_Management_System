@@ -1,0 +1,46 @@
+:host { display: block; }
+
+button {
+  background: #111827;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+button:hover { background: #374151; }
+button:disabled { background: #9ca3af; cursor: not-allowed; }
+
+input {
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  max-width: 240px;
+}
+
+.setup-block, .disable-block {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.setup-block pre {
+  background: #f3f4f6;
+  padding: 8px 12px;
+  border-radius: 6px;
+  user-select: all;
+  display: inline-block;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.row label {
+  width: 100px;
+}

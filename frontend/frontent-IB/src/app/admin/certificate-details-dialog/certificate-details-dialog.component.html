@@ -1,0 +1,64 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title>Certificate Details</h2>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  <div class="detail-section">
+    <div class="detail-row">
+      <label>ID:</label>
+      <span class="value">{{ data.id }}</span>
+    </div>
+
+    <div class="detail-row">
+      <label>Common Name (CN):</label>
+      <span class="value">{{ data.subjectCN }}</span>
+    </div>
+
+    <div class="detail-row">
+      <label>Organizational Unit (OU):</label>
+      <span class="value">{{ data.organizationalUnit }}</span>
+    </div>
+
+    <div class="detail-row">
+      <label>Country:</label>
+      <span class="value">{{ data.country }}</span>
+    </div>
+
+    <div class="detail-row">
+      <label>Issuer CN:</label>
+      <span class="value">{{ data.issuerCN }}</span>
+    </div>
+
+    <div class="detail-row">
+      <label>Type:</label>
+      <span class="value">{{ data.type }}</span>
+    </div>
+
+    <div class="detail-row">
+      <label>Valid From:</label>
+      <span class="value">{{ data.validFrom | date: 'dd.MM.yyyy HH:mm' }}</span>
+    </div>
+
+    <div class="detail-row">
+      <label>Valid To:</label>
+      <span class="value">{{ data.validTo | date: 'dd.MM.yyyy HH:mm' }}</span>
+    </div>
+
+    <div class="detail-row">
+      <label>Serial Number:</label>
+      <span class="value serial">{{ data.serialNumber }}</span>
+    </div>
+
+    <div class="detail-row status-row">
+      <label>Status:</label>
+      <span [ngClass]="getStatusClass()" class="status-badge">
+        {{ getStatus() }}
+      </span>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="dialogRef.close()">Close</button>
+</mat-dialog-actions>
+

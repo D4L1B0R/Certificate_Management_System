@@ -1,0 +1,45 @@
+<h3>Issue certificate from CSR</h3>
+
+<form (ngSubmit)="submit()" class="csr-form">
+  <div class="row" *ngIf="canPickOrg(); else fixedOrg">
+    <label>Organization</label>
+    <select [(ngModel)]="organizationId" name="organizationId">
+      <option *ngFor="let org of organizations" [ngValue]="org.id">{{ org.name }}</option>
+    </select>
+  </div>
+
+  <ng-template #fixedOrg>
+    <div class="row">
+      <label>Organization</label>
+      <input [value]="organizationId" disabled />
+    </div>
+  </ng-template>
+
+  <div class="row">
+    <label>Valid From</label>
+    <input [(ngModel)]="validFrom" name="from" type="datetime-local" />
+  </div>
+
+  <div class="row">
+    <label>Valid To</label>
+    <input [(ngModel)]="validTo" name="to" type="datetime-local" />
+  </div>
+
+  <div class="row">
+    <label>Issuer</label>
+    <select [(ngModel)]="issuerCertificateId" name="issuerCertificateId">
+      <option [ngValue]="null">-- select issuer --</option>
+      <option *ngFor="let i of issuerCandidates" [ngValue]="i.id">
+        #{{ i.id }} - {{ i.subjectCN }} ({{ i.type }})
+      </option>
+    </select>
+  </div>
+
+  <div class="row">
+    <label>CSR (PEM)</label>
+    <textarea [(ngModel)]="csrPem" name="csrPem" rows="10" placeholder="-----BEGIN CERTIFICATE REQUEST-----\n..."></textarea>
+  </div>
+
+  <button type="submit">Issue from CSR</button>
+</form>
+

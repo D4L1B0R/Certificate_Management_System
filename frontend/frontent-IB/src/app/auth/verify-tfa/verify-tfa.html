@@ -1,0 +1,17 @@
+<div class="login-container">
+  <h2>Dvofaktorska autentikacija</h2>
+  <p>Unesite 6-cifreni kod iz vaše authenticator aplikacije.</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <input formControlName="code"
+           type="text"
+           inputmode="numeric"
+           maxlength="6"
+           autocomplete="one-time-code"
+           autofocus />
+
+    <button type="submit">Verifikuj</button>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </form>
+</div>

@@ -1,0 +1,65 @@
+<app-admin-navbar></app-admin-navbar>
+
+<h2>Create CA User</h2>
+
+<form (ngSubmit)="createCaUser()">
+  <input [(ngModel)]="caUser.email" name="email" placeholder="Email">
+  <input [(ngModel)]="caUser.name" name="name" placeholder="Name">
+  <input [(ngModel)]="caUser.surname" name="surname" placeholder="Surname">
+  <input [(ngModel)]="caUser.password" name="password" placeholder="Password">
+
+  <select [(ngModel)]="caUser.organizationId" name="orgId">
+    <option *ngFor="let org of organizations" [value]="org.id">
+      {{ org.name }}
+    </option>
+  </select>
+
+  <button type="submit">Create</button>
+</form>
+
+<h2>Users</h2>
+
+<table>
+  <tr>
+    <th>Email</th>
+    <th>Name</th>
+    <th>Surname</th>
+    <th>Role</th>
+  </tr>
+
+  <tr *ngFor="let user of users">
+    <td>{{ user.email }}</td>
+    <td>{{ user.name }}</td>
+    <td>{{ user.surname }}</td>
+    <td>{{ user.role }}</td>
+  </tr>
+</table>
+
+<!-- New: Master key rotation section -->
+<section style="margin-top:24px;border-top:1px solid #e0e0e0;padding-top:16px;">
+  <h3>Master Key Rotation</h3>
+  <form (ngSubmit)="rotateMaster()" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <label style="display:flex;gap:6px;align-items:center;">
+      Batch size:
+      <input type="number" [(ngModel)]="rotateBatchSize" name="batchSize" min="1" placeholder="optional">
+    </label>
+
+    <label style="display:flex;gap:6px;align-items:center;">
+      Master key (base64):
+      <input type="text" [(ngModel)]="rotateKeyBase64" name="masterKeyBase64" placeholder="optional">
+    </label>
+
+    <button type="submit" [disabled]="rotating">Rotate Master Key</button>
+    <button type="button" (click)="getRotationStatus()" [disabled]="rotating">Get Rotation Status</button>
+  </form>
+
+  <div *ngIf="lastRotationResult" style="margin-top:8px;">
+    <strong>Last rotate result (console logged):</strong>
+    <pre style="white-space:pre-wrap;">{{ lastRotationResult | json }}</pre>
+  </div>
+
+  <div *ngIf="lastRotationStatus" style="margin-top:8px;">
+    <strong>Rotation status (console logged):</strong>
+    <pre style="white-space:pre-wrap;">{{ lastRotationStatus | json }}</pre>
+  </div>
+</section>

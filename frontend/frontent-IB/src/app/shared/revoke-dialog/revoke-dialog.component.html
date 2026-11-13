@@ -1,0 +1,44 @@
+<div class="backdrop" (click)="close()"></div>
+
+<div class="modal">
+  <h3>Revoke certificate</h3>
+
+  <p *ngIf="certId">
+    Certificate ID: <b>#{{ certId }}</b>
+  </p>
+
+  <label>Reason (X.509)</label>
+
+  <select [(ngModel)]="reason">
+    <option [ngValue]="null">Select reason</option>
+
+    <option *ngFor="let r of reasons" [ngValue]="r">
+      {{ r }}
+    </option>
+  </select>
+
+  <div class="buttons">
+    <button class="cancel" (click)="close()">Cancel</button>
+
+    <button
+      class="confirm"
+      [disabled]="!reason"
+      (click)="confirm()">
+      Confirm revoke
+    </button>
+  </div>
+
+</div>
+
+
+<!--<div style="-->
+<!--  position: fixed;-->
+<!--  top: 0;-->
+<!--  left: 0;-->
+<!--  width: 100vw;-->
+<!--  height: 100vh;-->
+<!--  background: yellow;-->
+<!--  z-index: 999999;-->
+<!--">-->
+<!--  MODAL TEST VISIBLE-->
+<!--</div>-->

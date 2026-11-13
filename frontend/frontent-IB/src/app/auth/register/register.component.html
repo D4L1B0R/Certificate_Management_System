@@ -1,0 +1,99 @@
+<div class="register-container">
+  <h2>Registracija</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <label>
+      Email
+      <input type="email" formControlName="email">
+    </label>
+
+    <div *ngIf="form.controls['email'].touched && form.controls['email'].invalid" class="error">
+      <div *ngIf="form.controls['email'].errors?.['required']">
+        Email je obavezan.
+      </div>
+
+      <div *ngIf="form.controls['email'].errors?.['pattern']">
+        Unesite validan email.
+      </div>
+    </div>
+
+    <label>
+      Lozinka
+      <input type="password" formControlName="password">
+    </label>
+
+    <div *ngIf="form.controls['password'].touched && form.controls['password'].invalid" class="error">
+      <div *ngIf="form.controls['password'].errors?.['required']">
+        Lozinka je obavezna.
+      </div>
+
+      <div *ngIf="form.controls['password'].errors?.['minlength']">
+        Lozinka mora imati najmanje 8 karaktera.
+      </div>
+      <div *ngIf="form.controls['password'].errors?.['pattern']">
+        Lozinka mora sadržati veliko slovo, malo slovo, broj i specijalni karakter.
+      </div>
+    </div>
+
+    <label>
+      Potvrdi lozinku
+      <input type="password" formControlName="confirmPassword">
+    </label>
+
+    <div *ngIf="passwordMismatch && form.controls['confirmPassword'].touched" class="error">
+      Lozinke se ne poklapaju.
+    </div>
+
+    <label>
+      Ime
+      <input type="text" formControlName="firstName">
+    </label>
+
+    <label>
+      Prezime
+      <input type="text" formControlName="lastName">
+    </label>
+
+    <label>
+      Organizacija
+      <select formControlName="organizationId">
+        <option value="" disabled selected>Izaberi organizaciju</option>
+
+        <option *ngFor="let org of organizations" [ngValue]="org.id">
+          {{ org.name }}
+        </option>
+      </select>
+    </label>
+
+    <button type="button" (click)="generateKeys()">
+      Generiši ključeve
+    </button>
+
+    <label>
+      Javni ključ
+      <textarea rows="8" formControlName="publicKey"></textarea>
+    </label>
+
+    <div *ngIf="form.controls['publicKey'].touched && form.controls['publicKey'].invalid" class="error">
+      Javni ključ je obavezan.
+    </div>
+
+    <button type="submit" [disabled]="loading || form.invalid || passwordMismatch">
+      Registruj se
+    </button>
+    <div class="auth-switch">
+      Već imate nalog?
+      <a routerLink="/login">Prijavite se</a>
+    </div>
+
+    <div *ngIf="message" class="success">
+      {{ message }}
+    </div>
+
+    <div *ngIf="error" class="error">
+      {{ error }}
+    </div>
+
+  </form>
+</div>

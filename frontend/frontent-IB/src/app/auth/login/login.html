@@ -1,0 +1,36 @@
+<div class="login-container">
+  <h2>Prijava</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Email
+      <input formControlName="email" type="email" />
+    </label>
+    <div *ngIf="form.controls['email'].invalid && (submitted || form.controls['email'].touched)" class="error">
+      <div *ngIf="form.controls['email'].errors?.['required']">Email je obavezan.</div>
+      <div *ngIf="form.controls['email'].errors?.['pattern']">Unesite validan email (npr. user@example.com).</div>
+    </div>
+
+    <label>
+      Lozinka
+      <input formControlName="password" type="password" />
+    </label>
+    <div *ngIf="form.controls['password'].invalid && (submitted || form.controls['password'].touched)" class="error">
+      <div *ngIf="form.controls['password'].errors?.['required']">Lozinka je obavezna.</div>
+      <div *ngIf="form.controls['password'].errors?.['minlength']">Lozinka mora imati najmanje 8 karaktera.</div>
+      <div *ngIf="form.controls['password'].errors?.['pattern']">
+        Lozinka mora sadržati veliko slovo, malo slovo, broj i specijalni karakter.
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="loading || form.invalid">Prijavi se</button>
+
+    <p class="register-link">
+      Nemate nalog?
+      <a routerLink="/register">Registrujte se</a>
+    </p>
+    <a routerLink="/forgot-password">Zaboravljena lozinka?</a>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </form>
+</div>
+

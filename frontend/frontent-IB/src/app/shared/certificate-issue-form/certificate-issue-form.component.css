@@ -1,0 +1,152 @@
+/* Unified theme tokens (kept local to the component) */
+:host {
+  --bg: #ffffff;
+  --panel: #f8fafc;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --muted: #475569;
+  --primary: #2563eb;        /* blue */
+  --primaryHover: #1d4ed8;
+  --danger: #b00020;
+  --success: #0a7a0a;
+
+  display: block;
+  color: var(--text);
+}
+
+/* Form container */
+.issue-form {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+/* Headings */
+h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Fieldsets */
+fieldset {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 10px;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+legend {
+  padding: 0 8px;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* Rows / labels */
+.row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+label {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* Inputs/selects */
+input[type='text'],
+input[type='number'],
+input[type='datetime-local'],
+select,
+input:not([type='checkbox']) {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+}
+
+input:disabled,
+select:disabled {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+input:focus,
+select:focus {
+  border-color: rgba(37, 99, 235, 0.55);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Checkbox grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.check {
+  margin: 6px 0;
+}
+
+.check label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* Primary button */
+button[type='submit'] {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button[type='submit']:hover {
+  background: var(--primaryHover);
+}
+
+button[type='submit'][disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Helper text */
+small {
+  color: var(--muted);
+  display: inline-block;
+  margin-top: 6px;
+}
+
+/* Status messages in template (inline styles exist, but ensure consistent font) */
+div[style*='color: #0a7a0a;'],
+div[style*='color: #b00020;'] {
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

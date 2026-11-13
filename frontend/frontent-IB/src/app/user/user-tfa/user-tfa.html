@@ -1,0 +1,65 @@
+<h3>Two-factor authentication</h3>
+
+<p *ngIf="!totpEnabled && !setupQrUri">
+  2FA is currently <strong>disabled</strong> for your account.
+  Adding 2FA means you'll need a 6-digit code from your authenticator app (e.g. Google Authenticator)
+  in addition to your password when logging in.
+</p>
+
+<p *ngIf="totpEnabled">
+  2FA is currently <strong>enabled</strong>.
+</p>
+
+<button *ngIf="!totpEnabled && !setupQrUri"
+        (click)="startSetup()"
+        [disabled]="totpLoading">
+  Enable 2FA
+</button>
+
+<div *ngIf="setupQrUri" class="setup-block">
+  <p>Scan this QR code with your authenticator app:</p>
+  <img [src]="setupQrUri" alt="2FA QR code" style="max-width: 250px; display: block;" />
+
+  <p>Or enter this code manually:</p>
+  <pre>{{ setupSecret }}</pre>
+
+  <p>Then enter the 6-digit code shown in your app to confirm:</p>
+  <input type="text"
+         [(ngModel)]="setupCode"
+         name="setupCode"
+         inputmode="numeric"
+         maxlength="6"
+         placeholder="123456" />
+
+  <div class="setup-actions">
+    <button (click)="confirmSetup()" [disabled]="totpLoading">Confirm</button>
+    <button (click)="cancelSetup()" [disabled]="totpLoading">Cancel</button>
+  </div>
+</div>
+
+<div *ngIf="totpEnabled" class="disable-block">
+  <h4>Disable 2FA</h4>
+  <p>To disable 2FA, confirm your password and current 6-digit code.</p>
+
+  <div class="row">
+    <label>Password</label>
+    <input type="password"
+           [(ngModel)]="disablePassword"
+           name="disablePassword" />
+  </div>
+
+  <div class="row">
+    <label>Code</label>
+    <input type="text"
+           [(ngModel)]="disableCode"
+           name="disableCode"
+           inputmode="numeric"
+           maxlength="6"
+           placeholder="123456" />
+  </div>
+
+  <button (click)="disable()" [disabled]="totpLoading">Disable 2FA</button>
+</div>
+
+<div *ngIf="totpOk" style="margin-top: 10px; color: #0a7a0a;">{{ totpOk }}</div>
+<div *ngIf="totpError" style="margin-top: 10px; color: #b00020;">{{ totpError }}</div>

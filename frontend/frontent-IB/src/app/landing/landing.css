@@ -1,0 +1,5 @@
+/* keep styling minimal - copied from previous app.html styles */
+:host { display:block }
+.hero { min-height: 80vh }
+.card { max-width:980px; margin:0 auto }
+

@@ -1,0 +1,102 @@
+<div class="header">
+  <div class="title">CA dashboard</div>
+  <div class="spacer"></div>
+  <button (click)="logout()">Logout</button>
+</div>
+
+<main class="body">
+  <section class="card">
+    <app-certificate-issue-form
+      mode="ca"
+      [fixedOrganizationId]="myOrgId"
+      (issued)="onIssued()">
+    </app-certificate-issue-form>
+  </section>
+
+  <section class="card">
+    <div class="row">
+      <h3>Certificates (organization)</h3>
+      <div class="spacer"></div>
+      <button class="btn-refresh" [disabled]="loading" (click)="loadCertificates()">
+        {{ loading ? 'Loading...' : 'Refresh' }}
+      </button>
+    </div>
+
+    <!-- render table as soon as we attempted load (certificates !== null),
+         show a loading row while fetching and an empty-row when no results -->
+    <table *ngIf="certificates !== null">
+      <thead>
+        <tr>
+          <th>Serial Number</th>
+          <th>CN</th>
+          <th>Issuer</th>
+          <th>Type</th>
+          <th>Valid From</th>
+          <th>Valid To</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="loading">
+          <td colspan="8" class="empty-message">Loading certificates…</td>
+        </tr>
+
+        <tr *ngIf="!loading && certificates.length === 0">
+          <td colspan="8" class="empty-message">No certificates found.</td>
+        </tr>
+
+        <tr *ngFor="let c of certificates">
+          <td>{{ c.serialNumber }}</td>
+          <td>{{ c.subjectCN }}</td>
+          <td>{{ c.issuerCN }}</td>
+          <td>{{ c.type }}</td>
+          <td>{{ c.validFrom | date:'dd.MM.yyyy' }}</td>
+          <td>{{ c.validTo | date:'dd.MM.yyyy' }}</td>
+          <td>{{ c.revoked ? 'Revoked' : 'Active' }}</td>
+          <td>
+            <button type="button" class="btn-action btn-view" (click)="selectCertificate(c.id)">Details</button>
+            <button type="button" class="btn-action btn-download" (click)="openDownloadModal(c.id)">Download</button>
+            <button type="button" class="btn-action btn-revoke revoke" [disabled]="c.revoked" (click)="openRevokeModal(c.id)">Revoke</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card" *ngIf="selectedCertificate">
+    <div class="row">
+      <h3>Certificate details</h3>
+      <div class="spacer"></div>
+      <button type="button" (click)="closeDetails()">Close</button>
+    </div>
+
+    <table class="details-table">
+      <tr><th>Serial Number</th><td>{{ selectedCertificate.serialNumber }}</td></tr>
+      <tr><th>Subject CN</th><td>{{ selectedCertificate.subjectCN }}</td></tr>
+      <tr><th>Organizational Unit</th><td>{{ selectedCertificate.organizationalUnit }}</td></tr>
+      <tr><th>Country</th><td>{{ selectedCertificate.country }}</td></tr>
+      <tr><th>Issuer</th><td>{{ selectedCertificate.issuerCN }}</td></tr>
+      <tr><th>Type</th><td>{{ selectedCertificate.type }}</td></tr>
+      <tr><th>Valid From</th><td>{{ selectedCertificate.validFrom | date:'dd.MM.yyyy' }}</td></tr>
+      <tr><th>Valid To</th><td>{{ selectedCertificate.validTo | date:'dd.MM.yyyy' }}</td></tr>
+      <tr><th>Status</th><td>{{ selectedCertificate.revoked ? 'Revoked' : 'Active' }}</td></tr>
+    </table>
+
+    <h4>PEM</h4>
+    <pre class="pem">{{ selectedCertificate.certificatePem }}</pre>
+  </section>
+</main>
+
+<app-certificate-download-modal
+  [isOpen]="downloadModalOpen"
+  (formatSelected)="handleDownloadFormat($event)"
+  (closed)="closeDownloadModal()">
+</app-certificate-download-modal>
+
+<app-revoke-dialog
+  *ngIf="revokeModalOpen"
+  [certId]="revokeCertId"
+  (revoked)="confirmRevoke($event)"
+  (closed)="revokeModalOpen = false">
+</app-revoke-dialog>

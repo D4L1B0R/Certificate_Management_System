@@ -1,0 +1,13 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Node
+node_modules/
+
+# Angular
+dist/
+
+# OS
+.DS_Store
+Thumbs.db

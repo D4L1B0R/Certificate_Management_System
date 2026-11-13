@@ -1,0 +1,113 @@
+<div class="main-header">
+  <div class="container">
+    <div class="brand">CA App</div>
+    <div class="spacer"></div>
+    <div class="user">Logged in: <strong>{{ email || 'Unknown' }}</strong></div>
+    <button class="logout" (click)="logout()">Logout</button>
+  </div>
+</div>
+
+<main class="main-body">
+  <section class="welcome">
+    <h2>User dashboard</h2>
+
+    <div class="tabs">
+      <button [class.active]="activeTab==='my-certs'" (click)="setTab('my-certs')">My certificates</button>
+      <button [class.active]="activeTab==='generate'" (click)="setTab('generate')">Generate certificate</button>
+      <button [class.active]="activeTab==='csr'" (click)="setTab('csr')">Upload CSR</button>
+      <button [class.active]="activeTab==='security'" (click)="setTab('security')">Security</button>
+    </div>
+
+    <div *ngIf="activeTab==='generate'" class="tab-content">
+      <app-certificate-issue-form
+        mode="user"
+        [fixedOrganizationId]="myOrgId"
+        (issued)="onIssued()">
+      </app-certificate-issue-form>
+    </div>
+
+    <div *ngIf="activeTab==='csr'" class="tab-content">
+      <app-user-csr></app-user-csr>
+    </div>
+
+    <div *ngIf="activeTab==='security'" class="tab-content">
+      <app-user-tfa></app-user-tfa>
+    </div>
+
+    <div *ngIf="activeTab==='my-certs'" class="tab-content">
+      <h3>My Certificates</h3>
+      <button class="load-btn" (click)="loadCertificates()">Load Certificates</button>
+
+      <table *ngIf="certificates !== null && certificates.length > 0">
+        <thead>
+          <tr>
+            <th>Serial Number</th>
+            <th>CN</th>
+            <th>Issuer</th>
+            <th>Valid From</th>
+            <th>Valid To</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cert of certificates">
+            <td>{{ cert.serialNumber }}</td>
+            <td>{{ cert.subjectCN }}</td>
+            <td>{{ cert.issuerCN }}</td>
+            <td>{{ cert.validFrom | date:'dd.MM.yyyy' }}</td>
+            <td>{{ cert.validTo | date:'dd.MM.yyyy' }}</td>
+            <td>{{ cert.revoked ? 'Revoked' : 'Active' }}</td>
+            <td>
+              <button class="details-btn" (click)="selectCertificate(cert.id)">Details</button>
+              <button class="details-btn" (click)="openDownloadModal(cert.id)">Download</button>
+              <button class="revoke-btn" [disabled]="cert.revoked" (click)="openRevokeModal(cert.id)">Revoke</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="certificates !== null && certificates.length === 0">No certificates found.</div>
+
+
+    </div>
+  </section>
+
+  <section class="details" *ngIf="selectedCertificate">
+    <div class="details-header">
+      <h2>Certificate Details</h2>
+      <button class="close-btn" (click)="closeDetails()">Close</button>
+    </div>
+    <table class="details-table">
+      <tr><th>Serial Number</th><td>{{ selectedCertificate.serialNumber }}</td></tr>
+      <tr><th>Subject CN</th><td>{{ selectedCertificate.subjectCN }}</td></tr>
+      <tr><th>Organizational Unit</th><td>{{ selectedCertificate.organizationalUnit }}</td></tr>
+      <tr><th>Country</th><td>{{ selectedCertificate.country }}</td></tr>
+      <tr><th>Issuer</th><td>{{ selectedCertificate.issuerCN }}</td></tr>
+      <tr><th>Type</th><td>{{ selectedCertificate.type }}</td></tr>
+      <tr><th>Valid From</th><td>{{ selectedCertificate.validFrom | date:'dd.MM.yyyy' }}</td></tr>
+      <tr><th>Valid To</th><td>{{ selectedCertificate.validTo | date:'dd.MM.yyyy' }}</td></tr>
+      <tr><th>Status</th><td>{{ selectedCertificate.revoked ? 'Revoked' : 'Active' }}</td></tr>
+      <tr><th>Subject DN</th><td>{{ selectedCertificate.subjectDN }}</td></tr>
+      <tr><th>Issuer DN</th><td>{{ selectedCertificate.issuerDN }}</td></tr>
+      <tr><th>Signature Algorithm</th><td>{{ selectedCertificate.signatureAlgorithm }}</td></tr>
+      <tr><th>Public Key Algorithm</th><td>{{ selectedCertificate.publicKeyAlgorithm }}</td></tr>
+      <tr><th>Public Key Size</th><td>{{ selectedCertificate.publicKeySize }} bits</td></tr>
+    </table>
+    <h3>PEM</h3>
+    <pre class="pem">{{ selectedCertificate.certificatePem }}</pre>
+  </section>
+</main>
+
+<app-certificate-download-modal
+  [isOpen]="downloadModalOpen"
+  (formatSelected)="handleDownloadFormat($event)"
+  (closed)="closeDownloadModal()">
+</app-certificate-download-modal>
+
+<app-revoke-dialog
+  *ngIf="revokeModalOpen"
+  [certId]="revokeCertId"
+  (revoked)="confirmRevoke($event)"
+  (closed)="revokeModalOpen = false">
+</app-revoke-dialog>

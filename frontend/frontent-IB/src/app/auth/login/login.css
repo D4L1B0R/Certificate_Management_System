@@ -1,0 +1,70 @@
+/* Simple, responsive login styles */
+.login-container {
+  max-width: 420px;
+  margin: 6vh auto;
+  padding: 2rem;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-container h2 {
+  margin: 0 0 1rem 0;
+  text-align: center;
+  color: #333;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.login-container label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.login-container input[type="email"],
+.login-container input[type="password"] {
+  margin-top: 0.35rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ccd0d6;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.login-container input:focus {
+  border-color: #4f7cff;
+  box-shadow: 0 0 0 3px rgba(79,124,255,0.08);
+}
+
+.login-container .error {
+  color: #b00020;
+  font-size: 0.875rem;
+}
+
+.login-container button {
+  margin-top: 0.5rem;
+  padding: 0.7rem 1rem;
+  background: #4f7cff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-container button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .login-container { margin: 4vh 1rem; padding: 1rem; }
+}
+

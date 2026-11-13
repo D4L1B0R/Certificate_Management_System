@@ -1,0 +1,18 @@
+package com.example.backendib.dtos.user;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class GetUserDTO {
+    private Long id;
+    private String email;
+    private String name;
+    private String surname;
+    private String role;
+}

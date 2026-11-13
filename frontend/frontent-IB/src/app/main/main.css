@@ -1,0 +1,13 @@
+:host { display:block; }
+/* keep header fixed to the very top */
+.main-header { background: #111827; color: white; padding: 0.4rem 1rem; position:fixed; top:0; left:0; right:0; z-index:1000; height:56px; display:flex; align-items:center; }
+.main-header .container { display:flex; align-items:center; gap:1rem; max-width:1100px; margin:0 auto; width:100%; }
+.brand { font-weight:700 }
+.spacer { flex:1 1 auto }
+.user { margin-right: .5rem }
+/* make logout button white-ish and visible */
+.logout { background: #ffffff; color: #111827; border: 1px solid rgba(0,0,0,0.06); padding: .4rem .6rem; border-radius:6px; cursor:pointer }
+.logout:hover { box-shadow: 0 6px 18px rgba(2,6,23,0.06) }
+/* body should start below the fixed header */
+.main-body { max-width:1100px; margin:2rem auto; padding: 1rem; padding-top: 80px; }
+.welcome { background:white; border-radius:10px; padding:1.5rem; box-shadow: 0 6px 18px rgba(2,6,23,0.06) }
